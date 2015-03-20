@@ -1,8 +1,8 @@
 {
   "name": "req-sync",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A synchronous HTTP Client library for node.js",
-  "main": "req-sync.js",
+  "main": "lib/req-sync.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/Centny/req-sync.git"
