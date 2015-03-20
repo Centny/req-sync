@@ -41,6 +41,15 @@ describe('util', function() {
 	console.log(rsync.req({
 		url: "http://localhost:8334/get",
 	}));
+	console.log(rsync.req({
+		url: "http://localhost:8334/get",
+		json: false,
+	}));
+	rsync.cookie = ".ckk";
+	console.log(rsync.req({
+		url: "http://localhost:8334/get",
+		json: false,
+	}));
 	rsync.post("http://www");
 	rsync.post("http:/");
 	rsync.post("http://www/?");

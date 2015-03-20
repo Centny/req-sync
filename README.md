@@ -61,7 +61,5 @@ rsync.get("http://www.com/api",true);
 * `data`: the reponse data.
 * `status`: the http status code.
 
-## testing
-
-
-    make test
+## Other
+* enable global cookie:`require('req-sync').cookie=".cookie"`

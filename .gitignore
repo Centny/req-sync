@@ -11,3 +11,6 @@ node_modules
 req-sync/req-sync.xcodeproj/xcuserdata
 
 req-sync/req-sync.xcodeproj/project.xcworkspace/xcuserdata
+.ckk
+
+npm-debug.log
