@@ -6,14 +6,14 @@
 		    'include_dirs': ["<!(node -e \"require('nan')\")"],
 		    'conditions':[
 				['OS=="win"',{
-						'include_dirs': ["./curl/include"],
+						'include_dirs': ["../curl/include"],
 						'libraries' : ['-llibcurl'],
 						'configurations':{
 							"Release":{
 								"msvs_settings":{
 									"VCLinkerTool":{
 										"AdditionalLibraryDirectories":[
-											"../curl/lib"
+											"../../curl/lib"
 										]
 									}
 								}
