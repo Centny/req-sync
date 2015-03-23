@@ -6,11 +6,25 @@ req-sync is Node.js extension that provides syncronous http request.
 
 You must have libcurl installed in order to compile this extension.
 
-Ubuntu: `sudo apt-get install libcurl4-openssl-dev`
+Ubuntu: 
 
-CentOS/redhat: `sudo yum install libcurl libcurl-devel`
+* `sudo apt-get install libcurl4-openssl-dev`
 
-Mac:`brew install libcurl`
+CentOS/redhat: 
+
+* `sudo yum install libcurl libcurl-devel`
+
+Mac:
+
+* `brew install libcurl`
+
+Window:
+
+* compile the `openssl/libcurl`
+* copy libcurl `include` floder to `node_modules/curl/`
+* copy `libcurl.lib` to `node_modules/curl/lib/`
+* copy `libcurl.dll/libeay32.dll/ssleay32.dll` to `%PATH%`
+* `npm install`
 
 # Using
 
