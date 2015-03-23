@@ -45,6 +45,23 @@ var ret=rsync.req({
 	json: true //parse return as json.
 });
 console.log(ret);
+//
+//post file
+rsync.req({
+	method: "POST",
+	url: "http://localhost:8334/u",
+	cookie: true,
+	margs: {
+		"aa": "bb",
+	},
+	mfs: {
+		"file": "test/run.js",
+	},
+	headers: [
+		"aaa:bbb"
+	],
+});
+//
 //post/get
 rsync.post("http://www.com/api",{},true);
 rsync.get("http://www.com/api",true);
@@ -66,6 +83,8 @@ rsync.get("http://www.com/api",true);
 * `cookie`: if setting true, it will using the `.cookie` as cookie file name. or setting cookie file paht like `/tmp/a.cookie`.
 * `json`:whether parse return string as json to javascript object.
 * `body`: the request body,if it is not empty,the `args` will be ignore when using POST method.
+* `marg`: the multipart fileds.
+* `mfs`: the multipart files.
 
 
 # Return

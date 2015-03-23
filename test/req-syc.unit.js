@@ -1,30 +1,23 @@
 var rsync = require("../lib/req-sync.js");
+var as = require("assert");
 describe('util', function() {
 	//
 	// rsync.req("POST", "http://www.baidu.com/?a=1");
-	rsync.req({
+	var res;
+	res = rsync.req({
 		method: "GET",
-		url: "http://localhost:8334/set",
+		url: "http://localhost:8334/t",
 		args: {
 			val: "xxxxd-01",
 		},
-		headers: {},
 		cookie: true,
 		json: true
 	});
-	rsync.req({
-		method: "POST",
-		url: "http://localhost:8334/set",
-		args: {
-			val: "xxxxd-02",
-		},
-		headers: {},
-		cookie: true,
-		json: true
-	});
-	rsync.req({
+	as.equal(res.data.data.val, "xxxxd-01");
+	//
+	res = rsync.req({
 		method: "GET",
-		url: "http://localhost:8334/set?xxx=ss",
+		url: "http://localhost:8334/t?xxx=ss",
 		args: {
 			val: "xxxxd-03",
 		},
@@ -32,19 +25,54 @@ describe('util', function() {
 		cookie: true,
 		json: true
 	});
-	console.log(rsync.req({
-		method: "GET",
-		url: "http://localhost:8334/get",
+	as.equal(res.data.data.val, "xxxxd-03");
+	//
+	res = rsync.req({
+		method: "POST",
+		url: "http://localhost:8334/t",
+		args: {
+			val: "xxxxd-02",
+		},
+		headers: {},
 		cookie: true,
 		json: true
-	}));
-	console.log(rsync.req({
+	});
+	as.equal(res.data.data.val, "xxxxd-02");
+	//
+	rsync.req({
+		url: "http://localhost:8334/set?val=abc",
+		cookie: true,
+		headers: [
+			"Content-Type:bbb"
+		],
+	});
+	res = rsync.req({
 		url: "http://localhost:8334/get",
-	}));
-	console.log(rsync.req({
+		json: true,
+		cookie: true,
+	});
+	as.equal(res.data.data, "abc");
+	//
+	res = rsync.req({
+		method: "POST",
+		url: "http://localhost:8334/u",
+		cookie: true,
+		margs: {
+			"aa": "bb",
+		},
+		mfs: {
+			"file": "test/run.js",
+		},
+		headers: [
+			"aaa:bbb"
+		],
+	});
+	as.equal(res.data.data, "OK");
+	//
+	rsync.req({
 		url: "http://localhost:8334/get",
 		json: false,
-	}));
+	});
 	rsync.cookie = ".ckk";
 	console.log(rsync.req({
 		url: "http://localhost:8334/get",

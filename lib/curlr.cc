@@ -33,7 +33,8 @@ static NAN_METHOD(R) {
     Local<String> K_method = NanNew<String>("method");
     Local<String> K_url = NanNew<String>("url");
     Local<String> K_headers = NanNew<String>("headers");
-    Local<String> K_args = NanNew<String>("args");
+    Local<String> K_margs = NanNew<String>("margs");
+    Local<String> K_mfs = NanNew<String>("mfs");
     Local<String> K_timeout = NanNew<String>("timeout");
     Local<String> K_timeout_c = NanNew<String>("timeout_c");
     Local<String> K_body = NanNew<String>("body");
@@ -46,10 +47,10 @@ static NAN_METHOD(R) {
         return CL_THROW("CurlR arguments is empty");
     }
     Local<Object> opt = Local<Object>::Cast(args[0]);
-    if (!opt->Has(K_method) || !opt->Has(K_url) || !opt->Has(K_args) || !opt->Has(K_headers)) {
-        return CL_THROW("method or url or args or headers is not setted");
+    if (!opt->Has(K_method) || !opt->Has(K_url) || !opt->Has(K_margs) || !opt->Has(K_headers) || !opt->Has(K_mfs)) {
+        return CL_THROW("method or url or margs or headers or mfs is not setted");
     }
-    if (!opt->Get(K_args)->IsObject() || !opt->Get(K_headers)->IsObject()){
+    if (!opt->Get(K_margs)->IsObject() || !opt->Get(K_headers)->IsObject()){
         return CL_THROW("args or headers is not object");
     }
     if (!opt->Get(K_method)->IsString() || !opt->Get(K_url)->IsString()) {
@@ -58,8 +59,10 @@ static NAN_METHOD(R) {
     Local<String> method = Local<String>::Cast(opt->Get(K_method));
     Local<String> url = Local<String>::Cast(opt->Get(K_url));
     Local<Array> reqh = Local<Array>::Cast(opt->Get(K_headers));
-    Local<Object> reqa = Local<Object>::Cast(opt->Get(K_args));
+    Local<Object> reqa = Local<Object>::Cast(opt->Get(K_margs));
     Local<Array> reqa_k = reqa->GetOwnPropertyNames();
+    Local<Object> reqf = Local<Object>::Cast(opt->Get(K_mfs));
+    Local<Array> reqf_k = reqf->GetOwnPropertyNames();
     Local<String> body = NanNew<String>((const char*) "", 0);
     Local<String> cookie = NanNew<String>((const char*) "", 0);
     long timeout_c = 1 * 60 * 60 * 1000; /* 1 hr in msec */
@@ -111,9 +114,12 @@ static NAN_METHOD(R) {
         if (body_.length() > 0) {
             curl_easy_setopt(curl, CURLOPT_POSTFIELDS, *body_);
             curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (curl_off_t)body_.length());
-        }else if(reqa_k->Length()>0){
+        }else if(reqa_k->Length()>0 || reqf_k->Length()>0){
             for (uint32_t i = 0; i < reqa_k->Length(); ++i) {
-                curl_formadd(&form_l, &form_l_e, CURLFORM_PTRNAME, *NanUtf8String(reqa_k->Get(i)), CURLFORM_PTRCONTENTS, *NanUtf8String(reqa->Get(reqa_k->Get(i))) , CURLFORM_END);
+                curl_formadd(&form_l, &form_l_e, CURLFORM_COPYNAME, *NanUtf8String(reqa_k->Get(i)), CURLFORM_COPYCONTENTS, *NanUtf8String(reqa->Get(reqa_k->Get(i))) , CURLFORM_END);
+            }
+            for (uint32_t i = 0; i < reqf_k->Length(); ++i) {
+                curl_formadd(&form_l, &form_l_e, CURLFORM_COPYNAME, *NanUtf8String(reqf_k->Get(i)), CURLFORM_FILE, *NanUtf8String(reqf->Get(reqf_k->Get(i))) , CURLFORM_END);
             }
             curl_easy_setopt(curl, CURLOPT_HTTPPOST, form_l);
         }
