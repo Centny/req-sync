@@ -62,6 +62,14 @@ rsync.req({
 	],
 });
 //
+//post body
+rsync.req({
+	method: "POST",
+	url: "http://localhost:8334/b",
+	cookie: true,
+	body: '{"val":"OK"}',
+});
+//
 //post/get
 rsync.post("http://www.com/api",{},true);
 rsync.get("http://www.com/api",true);

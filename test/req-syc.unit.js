@@ -69,6 +69,14 @@ describe('util', function() {
 	});
 	as.equal(res.data.data, "OK");
 	//
+	res = rsync.req({
+		method: "POST",
+		url: "http://localhost:8334/b",
+		cookie: true,
+		body: '{"val":"OK"}',
+	});
+	as.equal(res.data.val, "OK");
+	//
 	rsync.req({
 		url: "http://localhost:8334/get",
 		json: false,

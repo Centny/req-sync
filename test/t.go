@@ -3,9 +3,15 @@ package main
 import (
 	"fmt"
 	"github.com/Centny/gwf/routing"
+	"io/ioutil"
 	"net/http"
 )
 
+func B(hs *routing.HTTPSession) routing.HResult {
+	bys, _ := ioutil.ReadAll(hs.R.Body)
+	hs.W.Write(bys)
+	return routing.HRES_RETURN
+}
 func U(hs *routing.HTTPSession) routing.HResult {
 	hs.R.ParseMultipartForm(102400)
 	_, _, err := hs.R.FormFile("file")
@@ -37,6 +43,7 @@ func Get(hs *routing.HTTPSession) routing.HResult {
 func main() {
 	sb := routing.NewSrvSessionBuilder("", "/", "xx", 30*60*1000, 10000)
 	mux := routing.NewSessionMux("", sb)
+	mux.HFunc("^/b.*$", B)
 	mux.HFunc("^/t.*$", T)
 	mux.HFunc("^/u.*$", U)
 	mux.HFunc("^/set.*$", Set)
