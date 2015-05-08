@@ -6,6 +6,17 @@ describe('util', function() {
 	var res;
 	res = rsync.req({
 		method: "GET",
+		url: "http://localhost:84/t",
+		args: {
+			val: "xxxxd-01",
+		},
+		cookie: true,
+		json: true
+	});
+	as.ok(res.err && res.err.length, "not error")
+	console.log(res);
+	res = rsync.req({
+		method: "GET",
 		url: "http://localhost:8334/t",
 		args: {
 			val: "xxxxd-01",
@@ -13,6 +24,7 @@ describe('util', function() {
 		cookie: true,
 		json: true
 	});
+	as.ok(!res.err, res.err);
 	as.equal(res.data.data.val, "xxxxd-01");
 	//
 	res = rsync.req({
@@ -25,6 +37,7 @@ describe('util', function() {
 		cookie: true,
 		json: true
 	});
+	as.ok(!res.err, res.err);
 	as.equal(res.data.data.val, "xxxxd-03");
 	//
 	res = rsync.req({
@@ -37,6 +50,7 @@ describe('util', function() {
 		cookie: true,
 		json: true
 	});
+	as.ok(!res.err, res.err);
 	as.equal(res.data.data.val, "xxxxd-02");
 	//
 	rsync.req({
@@ -51,6 +65,7 @@ describe('util', function() {
 		json: true,
 		cookie: true,
 	});
+	as.ok(!res.err, res.err);
 	as.equal(res.data.data, "abc");
 	//
 	res = rsync.req({
@@ -67,6 +82,7 @@ describe('util', function() {
 			"aaa:bbb"
 		],
 	});
+	as.ok(!res.err, res.err);
 	as.equal(res.data.data, "OK");
 	//
 	res = rsync.req({
@@ -75,6 +91,7 @@ describe('util', function() {
 		cookie: true,
 		body: '{"val":"OK"}',
 	});
+	as.ok(!res.err, res.err);
 	as.equal(res.data.val, "OK");
 	//
 	rsync.req({
