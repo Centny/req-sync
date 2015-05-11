@@ -5,6 +5,7 @@ import (
 	"github.com/Centny/gwf/routing"
 	"io/ioutil"
 	"net/http"
+	"runtime"
 )
 
 func B(hs *routing.HTTPSession) routing.HResult {
@@ -41,6 +42,7 @@ func Get(hs *routing.HTTPSession) routing.HResult {
 	return hs.MsgRes(hs.StrVal("kvs"))
 }
 func main() {
+	runtime.GOMAXPROCS(runtime.NumCPU() - 1)
 	sb := routing.NewSrvSessionBuilder("", "/", "xx", 30*60*1000, 10000)
 	mux := routing.NewSessionMux("", sb)
 	mux.HFunc("^/b.*$", B)
