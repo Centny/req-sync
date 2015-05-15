@@ -1,6 +1,8 @@
 var rsync = require("../lib/req-sync.js");
 var as = require("assert");
 
+// console.log("id-" + process.argv[2]);
+rsync.cookie = process.argv[2] + ".cookie"
 var res = rsync.req({
 	method: "GET",
 	url: "http://localhost:8334/t",
