@@ -7,6 +7,23 @@ describe('util', function() {
 	res = rsync.req({
 		method: "GET",
 		url: "http://localhost:84/t",
+		qargs: {
+			a: 1,
+			b: 2,
+		},
+		args: {
+			val: "xxxxd-01",
+		},
+		cookie: true,
+		json: true
+	});
+	res = rsync.req({
+		method: "GET",
+		url: "http://localhost:84/t?c=3",
+		qargs: {
+			a: 1,
+			b: 2,
+		},
 		args: {
 			val: "xxxxd-01",
 		},
